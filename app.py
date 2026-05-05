@@ -22,10 +22,22 @@ st.markdown("""
         text-align: center;
         margin-bottom: 2rem;
     }
+
+    .promo-banner {
+        background: linear-gradient(90deg, #cc0000 0%, #ff4b4b 100%);
+        color: white;
+        padding: 1rem;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
     
     .product-box {
         border: 1px solid #e0e0e0;
-        border-radius: 8px 8px 0 0; /* Rounded top only to sit on button */
+        border-radius: 8px 8px 0 0;
         padding: 1.5rem;
         background-color: #fcfcfc;
         height: 160px;
@@ -39,6 +51,18 @@ st.markdown("""
         font-size: 1.4rem;
         font-weight: 800;
     }
+
+    .promo-price {
+        color: #cc0000;
+        font-size: 1.4rem;
+        font-weight: 800;
+    }
+
+    .old-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.9rem;
+    }
     
     .dept-title {
         color: #003366;
@@ -47,7 +71,6 @@ st.markdown("""
         padding-left: 15px;
     }
 
-    /* Professional WhatsApp Button Style */
     .whatsapp-btn {
         background-color: #25D366;
         color: white !important;
@@ -55,22 +78,17 @@ st.markdown("""
         padding: 12px;
         display: block;
         text-align: center;
-        border-radius: 0 0 8px 8px; /* Rounded bottom to match card */
+        border-radius: 0 0 8px 8px;
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
         margin-bottom: 25px;
-        transition: 0.3s;
-    }
-    .whatsapp-btn:hover {
-        background-color: #128C7E;
-        color: white;
     }
     </style>
     """, unsafe_allow_html=True)
 
 # --- DATA INITIALIZATION ---
-# Add your specific WhatsApp numbers here (Use international format: 2782...)
 DEPT_CONTACTS = {
+    "Promotions": "27821234567", # General sales line
     "ICU Fencing": "27821234567",
     "Open Sections": "27821234567",
     "Roofing": "27821234567",
@@ -80,29 +98,37 @@ DEPT_CONTACTS = {
 }
 
 DEPT_DATA = {
+    "Promotions": {
+        "subtitle": "Limited Time Manufacturing Specials",
+        "products": [
+            ["Palisade Panels (Bulk Buy)", "R 850.00", "R 980.00"],
+            ["Clearview 2.1m (Off-cuts)", "R 950.00", "R 1,250.00"],
+            ["IBR Sheets 6m bundle", "R 550.00", "R 690.00"]
+        ]
+    },
     "ICU Fencing": {
         "subtitle": "Clearview & High Security Fencing",
-        "products": [["Clearview Panel 2.1m", "R 1,250.00"], ["Post & Fixings Kit", "R 450.00"], ["Security Mesh 3.0m", "R 1,800.00"]]
+        "products": [["Clearview Panel 2.1m", "R 1,250.00"], ["Post & Fixings Kit", "R 450.00"]]
     },
     "Open Sections": {
         "subtitle": "Lip Channels & Structural Purlins",
-        "products": [["Lip Channel 100x50x20x2mm", "R 165.00/m"], ["Lip Channel 125x50x20x2mm", "R 195.00/m"]]
+        "products": [["Lip Channel 100x50x20x2mm", "R 165.00/m"]]
     },
     "Roofing": {
         "subtitle": "IBR & Corrugated Roofing Solutions",
-        "products": [["IBR Sheet 0.47mm Zincalume", "R 115.00/m"], ["Corrugated 0.5mm Galv", "R 108.00/m"]]
+        "products": [["IBR Sheet 0.47mm Zincalume", "R 115.00/m"]]
     },
     "Fencing": {
         "subtitle": "Industrial Palisade Fencing",
-        "products": [["Palisade Panel 3m x 1.8m", "R 980.00"], ["Palisade Bolt-on Pale", "R 42.00"]]
+        "products": [["Palisade Panel 3m x 1.8m", "R 980.00"]]
     },
     "Hardware": {
         "subtitle": "Steel Components & Accessories",
-        "products": [["Pole Caps 50mm", "R 12.50"], ["Heavy Duty Hinges", "R 55.00"], ["Wall Spikes (1.5m)", "R 89.00"], ["Weaving Coil (50kg)", "R 1,100.00"]]
+        "products": [["Pole Caps 50mm", "R 12.50"], ["Wall Spikes (1.5m)", "R 89.00"]]
     },
     "Plasma": {
         "subtitle": "CNC Precision Plasma Cutting",
-        "products": [["Custom Base Plates", "Market Price"], ["Plasma Cut to Size", "Per kg/min"]]
+        "products": [["Custom Base Plates", "Market Price"]]
     }
 }
 
@@ -110,10 +136,9 @@ DEPT_DATA = {
 with st.sidebar:
     st.image("https://www.stewartsandlloyds.co.za/wp-content/uploads/2023/04/Stewarts-and-Lloyds-Logo.png", width=200)
     st.markdown("---")
-    st.title("Navigation")
-    selection = st.radio("Select Department:", list(DEPT_DATA.keys()))
+    selection = st.radio("Go to Department:", list(DEPT_DATA.keys()))
     st.markdown("---")
-    st.info(f"**Direct WhatsApp:**\n\n+{DEPT_CONTACTS[selection]}")
+    st.info(f"**Contact {selection}:**\n\n+{DEPT_CONTACTS[selection]}")
 
 # --- MAIN PAGE CONTENT ---
 st.markdown(f"""
@@ -123,8 +148,12 @@ st.markdown(f"""
     </div>
     """, unsafe_allow_html=True)
 
+# Add Promo Banner if on Promotions page
+if selection == "Promotions":
+    st.markdown('<div class="promo-banner">🔥 MONTHLY MANUFACTURING SPECIALS - WHILE STOCKS LAST 🔥</div>', unsafe_allow_html=True)
+
 st.markdown(f"<h2 class='dept-title'>{selection}</h2>", unsafe_allow_html=True)
-st.write(f"Displaying catalog for: **{DEPT_DATA[selection]['subtitle']}**")
+st.write(f"Section: **{DEPT_DATA[selection]['subtitle']}**")
 st.markdown("---")
 
 # Display Products
@@ -133,28 +162,34 @@ cols = st.columns(3)
 
 for i, item in enumerate(items):
     prod_name = item[0]
-    prod_price = item[1]
-    phone = DEPT_CONTACTS[selection]
+    is_promo = len(item) > 2
     
-    # Create the WhatsApp message link
-    msg = f"Hi S&L Manufacturing, I'm interested in: {prod_name} (Price: {prod_price}) from the {selection} department."
+    current_price = item[1]
+    old_price = item[2] if is_promo else ""
+    
+    phone = DEPT_CONTACTS[selection]
+    msg = f"Hi S&L, I want to claim the special for {prod_name} at {current_price}." if is_promo else f"Hi S&L, I am interested in {prod_name}."
     wa_url = f"https://wa.me/{phone}?text={urllib.parse.quote(msg)}"
     
     with cols[i % 3]:
-        # Product Info
+        # Product Card Logic
+        price_display = f'<div class="old-price">{old_price}</div><div class="promo-price">{current_price}</div>' if is_promo else f'<div class="price-text">{current_price}</div>'
+        
         st.markdown(f"""
             <div class="product-box">
                 <div>
-                    <span style="color: #666; font-size: 0.8rem; text-transform: uppercase;">Product Code: SL-{i+100}</span>
-                    <h3 style="margin: 5px 0;">{prod_name}</h3>
+                    <span style="color: {'#cc0000' if is_promo else '#666'}; font-size: 0.8rem; font-weight: bold;">
+                        {'⚡ SPECIAL OFFER' if is_promo else f'CODE: SL-{selection[:2].upper()}-{i+100}'}
+                    </span>
+                    <h3 style="margin: 5px 0; font-size: 1.1rem;">{prod_name}</h3>
                 </div>
-                <div class="price-text">{prod_price}</div>
+                {price_display}
             </div>
             <a href="{wa_url}" class="whatsapp-btn" target="_blank">
-                💬 ENQUIRE ON WHATSAPP
+                {'GET THIS DEAL' if is_promo else 'ENQUIRE ON WHATSAPP'}
             </a>
             """, unsafe_allow_html=True)
 
 # --- FOOTER ---
 st.markdown("---")
-st.markdown("<p style='text-align: center; color: gray;'>© 2026 Stewarts & Lloyds Manufacturing | Built for Excellence</p>", unsafe_allow_html=True)
+st.caption("© 2026 Stewarts & Lloyds Manufacturing | Prices subject to steel fluctuations.")
